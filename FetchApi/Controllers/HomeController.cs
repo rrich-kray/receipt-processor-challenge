@@ -99,7 +99,7 @@ namespace FetchApi.Controllers
 
         [Route("/receipts/process")]
         [HttpPost]
-        public JsonResult FetchInterviewApi([FromBody] MorningReceipt morningReceipt) // May need to create a custom model binder
+        public JsonResult FetchInterviewApi([FromBody] MorningReceipt morningReceipt)
         {
             if (!ModelState.IsValid)
                 return ModelBindingErrorLogger.LogErrorMessages(ModelState);
@@ -109,7 +109,9 @@ namespace FetchApi.Controllers
 
             this.MemoryCache.Set(id, score);
 
-            return new JsonResult(new KeyValuePair<string, string>("id", id));
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result.Add("id", id);
+            return new JsonResult(result);
         }
 
         [Route("/receipts/{id}/process")]
@@ -118,7 +120,11 @@ namespace FetchApi.Controllers
         {
             this.MemoryCache.TryGetValue(Id, out var result);
             if (result != null)
-                return new JsonResult(new KeyValuePair<string, int>("points", (int)result));
+            {
+                Dictionary<string, int> resultDict = new Dictionary<string, int>();
+                resultDict.Add("points", (int)result);
+                return new JsonResult(resultDict);
+            }
             else
                 return new JsonResult("The provided Id was not found in the in-memory database.");
         }
@@ -144,7 +150,9 @@ namespace FetchApi.Controllers
                     }
                 }
             }
-            return new JsonResult(new KeyValuePair<string, List<string>>("MODEL BINDING ERROR. Error messages:", messages));
+            Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
+            result.Add("MODEL BINDING ERROR. Error messages:", messages);
+            return new JsonResult(result);
         }
     }
 }
