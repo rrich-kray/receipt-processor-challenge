@@ -30,15 +30,15 @@
 
             return score;
         }
-        public int AlphaNumericScore() => this.Retailer.Count(char.IsLetterOrDigit);
+        private int AlphaNumericScore() => this.Retailer.Count(char.IsLetterOrDigit);
 
-        public int TotalCostScore() => this.Total % 1 == 0 ? 50 : 0;
+        private int TotalCostScore() => this.Total % 1 == 0 ? 50 : 0;
 
-        public int IsMultipleOf25Score() => this.Total % 0.25 == 0 ? 25 : 0;
+        private int IsMultipleOf25Score() => this.Total % 0.25 == 0 ? 25 : 0;
 
-        public int EveryTwoItemsScore() => (int)(Math.Floor((double)(this.Items.Count / 2)) * 5);
+        private int EveryTwoItemsScore() => (int)(Math.Floor((double)(this.Items.Count / 2)) * 5);
 
-        public int TrimmedLengthScore()
+        private int TrimmedLengthScore()
         {
             int sumLengthOfTrimmedItems = 0;
             foreach (Item item in this.Items)
@@ -52,13 +52,13 @@
             return sumLengthOfTrimmedItems;
         }
 
-        public int IsPurchaseDayOddScore()
+        private int IsPurchaseDayOddScore()
         {
             DateTime date = DateTime.Parse(this.PurchaseDate);
             return date.Day % 2 == 0 ? 0 : 6;
         }
 
-        public int TimeOfPurchaseScore()
+        private int TimeOfPurchaseScore()
         {
             TimeOnly purchaseTime = TimeOnly.Parse(this.PurchaseTime);
             int greaterThan2 = purchaseTime.CompareTo(TimeOnly.Parse("2:00PM"));

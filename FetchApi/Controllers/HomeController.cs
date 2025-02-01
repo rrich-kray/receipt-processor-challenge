@@ -5,7 +5,7 @@ namespace FetchApi.Controllers
 {
     public class FetchController : Controller
     {
-        public IMemoryCache Cache { get; set; }
+        private IMemoryCache Cache { get; set; }
         public FetchController(IMemoryCache memoryCache)
         {
             this.Cache = memoryCache;
