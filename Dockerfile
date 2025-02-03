@@ -28,3 +28,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "FetchApi.dll"]
+
+MS command:
+
+docker run --rm -it -p 127.0.0.1:8000:80 -p 127.0.0.1:8001:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8001 -e ASPNETCORE_Kestrel__Certificates__Default__Password="password" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v C:\Users\rrich\https:/https/ testwithnewurl
