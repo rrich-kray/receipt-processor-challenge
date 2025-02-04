@@ -1,28 +1,24 @@
-# Running the app:
+The docker image can be pulled from the following public Azure Container Registry:
 
-The app can be run one of two ways. Both require Docker to be installed on the host device.
+receiptprocessorapi.azurecr.io/fetchapi:latest
 
-1.) Using Visual Studio.
+# Running the app with HTTPS
 
-Clone the repo, open the sln file in the root directory using Visual Studio, and select "Container (DockerFile)" from the run menu. Running the app from this menu should build the image based on the docker file and subsequently run the image.
+In order for HTTPS requests to work, you will need to mount a volume containing an HTTPS certificate to the container.
 
-2.) Using the command line.
+There are many ways to go about this, but I found using dotnet dev-certs to be the easiest.
 
-Navigate to the root folder and run the following command to build the container image:
-
-docker build -t <IMAGE_NAME> .
-
-Running this image will allow you to make HTTP requests to the ASP.NET server, but HTTPS commands will require a dev certificate from the host device to be mapped to a volume on the container.
-
-To accomplish this, create a dev certificate using the following commands:
-
-dotnet dev-certs https -ep <PATH_TO_CERT>\aspnetapp.pfx -p password
+dotnet dev-certs https -ep <PATH_TO_CERT>\<CERT_NAME> -p <PASSWORD>
 dotnet dev-certs https --trust
-
-For the sake of simplicity, the app is configured to use "aspnetapp.pfx" and "password" for the certificate name and password, respectively, but the path of the certificate is up to you.
 
 Then run the docker image using the following command:
 
-docker run --rm -it -p <HOST_HTTPS_PORT>:443 -p <HOST_HTTP_PORT>:80 -v <PATH_TO_CERT>:/https/ <IMAGE_NAME>
+docker run --rm -it -p <HOST_HTTP_PORT>:8080 -p <HOST_HTTPS_PORT>:8081 -e ASPNETCORE_URLS="https://0.0.0.0:8081;http://0.0.0.0:8080" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password=<PASSWORD> -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/<CERT_NAME> -v <PATH_TO_CERT>:/https/ receiptprocessorapi.azurecr.io/fetchapi:latest
 
-The app is also configured to use port 443 for HTTPS and port 80 for HTTP., as well as /https/ for the container's certificate path.
+# Easier approach without HTTPS
+
+If you are alright with making only HTTP requests, run the following command to pull and run the image from the registry:
+
+docker run -it -p <HOST_PORT>:8080 receiptprocessorapi.azurecr.io/fetchapi:latest
+
+The host port is up to you. You should then be able to make requests to http://localhost:<HOST_PORT>.
