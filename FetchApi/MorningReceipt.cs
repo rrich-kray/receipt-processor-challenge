@@ -6,7 +6,6 @@
         public string PurchaseDate { get; set; }
         public string PurchaseTime { get; set; }
         public double Total { get; set; }
-
         public List<Item> Items { get; set; }
 
         public MorningReceipt(string retailer, string PurchaseDate, string PurchaseTime, double total, List<Item> items)
