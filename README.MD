@@ -17,14 +17,14 @@ docker run --rm -it -p <HOST_HTTP_PORT>:8080 -p <HOST_HTTPS_PORT>:8081 -e ASPNET
 
 # Runnig the app without HTTPS
 
-If you are alright with making only HTTP requests, run the following command to pull and run the image from the registry:
+If you are alright with making only HTTP requests, then a much simpler approach is to just use the following command to pull and run the image:
 
 docker run -it -p <HOST_PORT>:8080 receiptprocessorapi.azurecr.io/fetchapi:latest
 
-The host port is up to you. You should then be able to make requests to http://localhost:<HOST_PORT>.
+The host port is up to you. You should then be able to make requests to the API through http://localhost:<HOST_PORT>.
 
 # Running the app with Visual Studio
 
 If you encounter any issues with the above methods, you can always clone the repository to your machine and run the app through Visual Studio.
 
-Simply navigate to the projects root folder, open the .sln file and select "Container (Dockerfile)" in the dropdown next to the solution configuration and solution platform dropdowns in the ribbon. Visual Studio will then build and run the image from the dockerfile. 
+Simply navigate to the projects root folder, open the .sln file and select "Container (Dockerfile)" in the dropdown next to the solution configuration and solution platform dropdowns in the ribbon. Visual Studio will then build and run the image from the dockerfile.
